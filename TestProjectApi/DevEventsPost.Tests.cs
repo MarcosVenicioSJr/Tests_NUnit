@@ -23,9 +23,6 @@ namespace TestProjectApi
 
             _dbContext = new DevEventsDbContext(options);
 
-            // Inicializar o contexto do banco de dados com dados de teste (se necessário)
-
-            // Instanciar a controller passando o contexto do banco de dados
             _controller = new DevEventsController(_dbContext);
         }
 
@@ -46,8 +43,8 @@ namespace TestProjectApi
             var result = _controller.Post(devEvent) as ObjectResult;
 
             //assert
-            Assert.IsNotNull(result); // Response not null
-            Assert.AreEqual(201, result.StatusCode); // Verify Status code
+            Assert.IsNotNull(result);
+            Assert.AreEqual(201, result.StatusCode);
 
             Assert.AreEqual("Test", devEvent.Title);
             Assert.AreEqual("Tests", devEvent.Description);
@@ -59,7 +56,7 @@ namespace TestProjectApi
         public void VerifySave_InMemory_DevEventsPost()
         {
             TearDown();
-            // Adicione alguns dados de teste ao contexto do banco de dados
+
             var devEvent = new DevEvent()
             {
                 Title = "Marcos",
@@ -71,7 +68,6 @@ namespace TestProjectApi
             _dbContext.DevEvents.Add(devEvent);
             _dbContext.SaveChanges();
 
-            // Verifique se os dados foram salvos corretamente consultando o contexto do banco de dados
             var savedDevEvent = _dbContext.DevEvents.FirstOrDefault(e => e.Title == "Marcos");
             Assert.IsNotNull(savedDevEvent);
             Assert.AreEqual("Marcos", savedDevEvent.Title);
